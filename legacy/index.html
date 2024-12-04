@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -15,7 +15,7 @@
       body {
         margin: 0;
         padding: 10px;
-        font-family: 'Nunito Sans', sans-serif;
+        font-family: "Nunito Sans", sans-serif;
         font-optical-sizing: auto;
         font-style: normal;
       }
@@ -117,7 +117,7 @@
       }
 
       function displayRandomEntriesInTable(entries, container, index) {
-        const table = document.createElement('table');
+        const table = document.createElement("table");
         table.innerHTML = `<thead><tr><th colspan="5">Bingo #${
           index + 1
         }</th></tr></thead>`;
@@ -131,8 +131,8 @@
             cell = row.insertCell();
             if (count < entries.length) {
               if (count === 12) {
-                const bingoImg = document.createElement('img');
-                bingoImg.src = 'bingo.png';
+                const bingoImg = document.createElement("img");
+                bingoImg.src = "bingo.png";
                 cell.appendChild(bingoImg);
               } else {
                 cell.textContent = entries[count];
@@ -147,7 +147,7 @@
 
       function generateBingoCards() {
         const numberOfCards = parseInt(
-          document.getElementById('numberOfCards').value
+          document.getElementById("numberOfCards").value,
         );
 
         if (
@@ -155,40 +155,40 @@
           numberOfCards >= minCards &&
           numberOfCards <= maxCards
         ) {
-          document.getElementById('errorMessage').textContent = '';
-          const tablesContainer = document.getElementById('tablesContainer');
-          tablesContainer.innerHTML = '';
+          document.getElementById("errorMessage").textContent = "";
+          const tablesContainer = document.getElementById("tablesContainer");
+          tablesContainer.innerHTML = "";
 
-          fetch('bingo.json')
+          fetch("bingo.json")
             .then((response) => response.json())
             .then((data) => {
               const entries = data.entries;
               for (let index = 0; index < numberOfCards; index++) {
-                const tableContainer = document.createElement('div');
-                tableContainer.classList.add('table-container');
+                const tableContainer = document.createElement("div");
+                tableContainer.classList.add("table-container");
                 displayRandomEntriesInTable(
                   selectRandomEntries(entries),
                   tableContainer,
-                  index
+                  index,
                 );
                 tablesContainer.appendChild(tableContainer);
               }
               document
-                .getElementById('printBingoCards')
-                .classList.remove('hideBtn');
+                .getElementById("printBingoCards")
+                .classList.remove("hideBtn");
             })
-            .catch((error) => console.error('BINGO FAILED:', error));
+            .catch((error) => console.error("BINGO FAILED:", error));
         } else {
-          document.getElementById('errorMessage').textContent =
-            'Enter a valid number of bingo cards';
+          document.getElementById("errorMessage").textContent =
+            "Enter a valid number of bingo cards";
         }
       }
       function printToPDF() {
-        const tablesContainer = document.getElementById('tablesContainer');
-        const tables = tablesContainer.getElementsByTagName('table');
+        const tablesContainer = document.getElementById("tablesContainer");
+        const tables = tablesContainer.getElementsByTagName("table");
 
-        const loadingMessage = document.createElement('p');
-        loadingMessage.textContent = 'Generating PDF...';
+        const loadingMessage = document.createElement("p");
+        loadingMessage.textContent = "Generating PDF...";
         document.body.appendChild(loadingMessage);
 
         const { jsPDF } = window.jspdf;
@@ -197,8 +197,8 @@
         for (let i = 0; i < tables.length; i++) {
           const table = tables[i];
           html2canvas(table).then((canvas) => {
-            const imgData = canvas.toDataURL('image/jpeg', 0.7); // low res
-            doc.addImage(imgData, 'PNG', 10, y, 100, 120);
+            const imgData = canvas.toDataURL("image/jpeg", 0.7); // low res
+            doc.addImage(imgData, "PNG", 10, y, 100, 120);
             y += 140;
             if (
               y >= doc.internal.pageSize.height - 80 &&
@@ -208,19 +208,19 @@
               y = 10;
             }
             if (i === tables.length - 1) {
-              doc.save('eurovision_bingo_cards.pdf');
-              loadingMessage.textContent = 'File downloaded!';
+              doc.save("eurovision_bingo_cards.pdf");
+              loadingMessage.textContent = "File downloaded!";
             }
           });
         }
       }
 
       document
-        .getElementById('generateCardsBtn')
-        .addEventListener('click', generateBingoCards);
+        .getElementById("generateCardsBtn")
+        .addEventListener("click", generateBingoCards);
       document
-        .getElementById('printBingoCards')
-        .addEventListener('click', printToPDF);
+        .getElementById("printBingoCards")
+        .addEventListener("click", printToPDF);
     </script>
     <script src="html2canvas.min.js"></script>
     <script src="jspdf.umd.min.js"></script>
